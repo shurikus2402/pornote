@@ -15,5 +15,7 @@ class Homework(db.Model):
 
     member_id = db.Column(db.Integer, db.ForeignKey("member.id"), nullable=False)
 
-    name = db.Column(db.String(100))
-    time_end = db.Column(db.DateTime)
+    subject = db.Column(db.String(128))
+    description = db.Column(db.String(256))
+    class_nb = db.Column(db.Integer)
+    end_date = db.Column(db.DateTime)

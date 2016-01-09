@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% set active_page = "new_homework" %}
+
+{% block subtitle %}
+   Nouveau devoir
+{% endblock %}
+
+{% block content %}
+
+<div>
+   <h2 class="text-center">Nouveau devoir</h2>
+</div>
+
+<form class="form-horizontal" method="POST" action="{{ url_for("new_homework") }}">
+   <div class="form-group">
+      <label for="subject">Matière</label>
+      <select class="form-control" id="subject" name="subject">
+         <option>Français</option>
+         <option>Histoire</option>
+         <option>Maths S</option>
+         <option>Maths ES</option>
+         <option>SVT S</option>
+         <option>SVT ES</option>
+         <option>Physique S</option>
+         <option>Physique ES</option>
+         <option>Anglais</option>
+         <option>Espagnol</option>
+         <option>Allemand</option>
+      </select>
+   </div>
+
+   <div class="form-group">
+      <label for="description">Nom du devoir</label>
+      <input type="text" class="form-control" id="description" name="description" placeholder="Exercice 42 page 69">
+   </div>
+
+   <div class="form-group">
+      <label for="end_date">Pour quand ?</label>
+      <input type="date" class="form-control" id="end_date" name="end_date" placeholder="JJ/MM">
+   </div>
+
+   <div class="form-group">
+      <label for="exampleInputFile">Fichier</label>
+      <input type="file" id="exampleInputFile">
+      <p class="help-block">Sélectionnez le devoir à envoyer.</p>
+   </div>
+
+   <div class="form-group">
+      <button type="submit" class="btn btn-pornote">Envoyer !</button>
+   </div>
+
+</form>
+
+{% endblock content %}
