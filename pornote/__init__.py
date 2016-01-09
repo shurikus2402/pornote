@@ -6,7 +6,7 @@ from datetime import date
 import datetime
 
 app = Flask(__name__)
-app.config.from_object("pornote.default_settings")
+app.config.from_object("pornote.config")
 manager = Manager(app)
 
 db = SQLAlchemy(app)
