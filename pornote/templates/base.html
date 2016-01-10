@@ -44,13 +44,32 @@
             <div id="navbar" class="navbar-collapse collapse">
                <ul class="nav navbar-nav">
                   <li {% if active_page == "homepage" %} class="active" {% endif %}><a href="/">Accueil</a></li>
+                  {% if name %}
                   <li {% if active_page == "new_homework" %} class="active" {% endif %}><a href="{{ url_for("new_homework") }}">Nouveau devoir</a></li>
+                  <li><a href="">{{ name }}</a></li>
+                  <li><a href="{{ url_for("sign_out") }}">Déconnexion</a></li>
+                  {% else %}
+                  <li {% if active_page == "sign_up" %} class="active" {% endif %}><a href="{{ url_for("sign_up") }}">Inscription</a></li>
+                  <li {% if active_page == "sign_in" %} class="active" {% endif %}><a href="{{ url_for("sign_in") }}">Connexion</a></li>
+                  {% endif %}
                </ul>
             </div><!--/.nav-collapse -->
          </div>
       </nav>
 
       <div class="container theme-showcase" role="main">
+
+         {% with messages = get_flashed_messages() %}
+            {% if messages %}
+               <ul class=flashes>
+               {% for message in messages %}
+               	<div class="alert alert-info" role="alert">
+                     <strong>Hé ho !</strong> {{ message }}
+                  </div>
+               {% endfor %}
+               </ul>
+            {% endif %}
+         {% endwith %}
 
          {% block content %}
          {% endblock content %}

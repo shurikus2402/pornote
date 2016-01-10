@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% set active_page = "sign_up" %}
+
+{% block subtitle %}
+   Inscription
+{% endblock %}
+
+{% block content %}
+
+<div>
+   <h2 class="text-center">Inscription</h2>
+</div>
+
+<form class="form-horizontal" method="POST" action="{{ url_for("sign_up") }}">
+
+   <div class="form-group">
+      <label for="first_name">Prénom</label>
+      <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Jean">
+   </div>
+
+   <div class="form-group">
+      <label for="last_name">Nom (ou initial)</label>
+      <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Kévin">
+   </div>
+
+   <div class="form-group">
+      <label for="class_nb">Classe</label>
+      <select class="form-control" id="class_nb" name="class_nb">
+         <option>1</option>
+         <option>2</option>
+         <option>3</option>
+         <option>4</option>
+         <option>5</option>
+         <option>6</option>
+      </select>   
+   </div>
+
+   <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="ton_email@gmail.com">
+   </div>
+
+   <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="0000 (non mais sérieux mets pas ton code pin !)">
+   </div> 
+
+   <div class="form-group">
+      <button type="submit" class="btn btn-pornote">S'inscrire !</button>
+   </div>
+
+</form>
+
+{% endblock content %}

@@ -1,2 +1,3 @@
 *.pyc
 pornote/app.db
+pornote/config.py
