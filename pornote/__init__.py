@@ -32,6 +32,7 @@ def sign_out():
 
 @app.route("/connexion/", methods=["GET", "POST"])
 def sign_in():
+    # If the member is already logged in
     if "email" in session:
         return redirect(url_for("homepage"))
 
@@ -51,6 +52,7 @@ def sign_in():
 
 @app.route("/inscription/", methods=["GET", "POST"])
 def sign_up():
+    # If the member is already logged in
     if "email" in session:
         return redirect(url_for("homepage"))
 

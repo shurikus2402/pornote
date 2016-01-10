@@ -8,24 +8,24 @@
 {% block content %}
 
 <div>
-	<h2 class="text-center">Connexion</h2>
+   <h2 class="text-center">Connexion</h2>
 </div>
 
 <form class="form-horizontal" method="POST" action="{{ url_for("sign_in") }}">
 
-	<div class="form-group">
-		<label for="email">Email</label>
-		<input type="email" class="form-control" id="email" name="email" placeholder="jean@gmail.com">
-	</div>
+   <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="jean@gmail.com">
+   </div>
 
-	<div class="form-group">
-		<label for="password">Mot de passe</label>
-		<input type="password" class="form-control" id="password" name="password" placeholder="ton mot de passe">
-	</div> 
-	
-	<div class="form-group">
-		<button type="submit" class="btn btn-pornote">Se connecter !</button>
-	</div>
+   <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="ton mot de passe">
+   </div> 
+
+   <div class="form-group">
+      <button type="submit" class="btn btn-pornote">Se connecter !</button>
+   </div>
 
 </form>
 
