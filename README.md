@@ -22,4 +22,4 @@ $ python manage.py db migrate
 $ python manage.py db upgrade
 ```
 
-Then, you need to create a `config.py` file, there is a template called `default_config.py` in the `pornote` directory that you can copy. Don't forget to change the secret_key in the configuation file before using it !
+Then, you need to create a `config.py` file, there is a template called `default_config.py` in the `pornote` directory that you can copy. Don't forget to change the secret key in the configuation file before using it ! Also, you should set the location of your `upload` folder, by changing the `UPLOAD_FOLDER` value in the config file. And finally, you might consider changing the `UNALLOWED_EXTENSIONS` value to prevent from XSS problems on your server.

@@ -32,5 +32,6 @@ class Homework(db.Model):
 
     subject = db.Column(db.String(128))
     description = db.Column(db.String(256))
-    class_nb = db.Column(db.Integer)
     end_date = db.Column(db.Date)
+    filename = db.Column(db.String(128))
+    class_nb = db.Column(db.Integer)

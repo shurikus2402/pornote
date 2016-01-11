@@ -2,8 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
+from werkzeug import secure_filename
 from datetime import date
 import datetime
+import os
 
 app = Flask(__name__)
 app.config.from_object("pornote.config")
@@ -76,19 +78,25 @@ def sign_up():
 
         return redirect(url_for("homepage"))
 
+def allowed_file(filename):
+    return  '.' in filename and \
+            filename.rsplit('.', 1)[1] not in app.config["UNALLOWED_EXTENSIONS"]
+
 @app.route("/nouveau_devoir/", methods=["GET", "POST"])
 def new_homework():
     # If the member is not logged in
     if "email" not in session:
-        return render_template("homepage.html")
+        return redirect(url_for("homepage"))
 
     member = Member.query.filter_by(email = session["email"]).first()
 
     if request.method == "GET":
         return render_template("new_homework.html", name=member.first_name)
     elif request.method == "POST":
+        # DD/MM
         date_form = request.form.get("end_date")
         now = date.today()
+        # DD/MM/YYYY
         date_form += "/" + str(now.year)
 
         date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
@@ -96,12 +104,22 @@ def new_homework():
         if date_form < now:
             date_form += timedelta(days=365)
 
+        # File upload system
+        file = request.files["file"]
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        else:
+            flash("Fichier invalide, devoir non ajouté !")
+            return redirect(url_for("new_homework"))
+
         homework = Homework(
             member_id = member.id,
             subject = request.form.get("subject"),
             description = request.form.get("description"),
-            class_nb = member.class_nb,
-            end_date = date_form
+            end_date = date_form,
+            filename = filename,
+            class_nb = member.class_nb
         )
 
         db.session.add(homework)
