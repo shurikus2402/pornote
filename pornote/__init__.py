@@ -61,13 +61,22 @@ def sign_up():
     if request.method == "GET":
         return render_template("sign_up.html")
     elif request.method == "POST":
-        member = Member(
-           first_name = request.form.get("first_name"), 
-           last_name = request.form.get("last_name"), 
-           email = request.form.get("email"),
-           class_nb = int(request.form.get("class_nb")),
-           password = request.form.get("password")
-        )
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        class_nb = int(request.form.get("class_nb"))
+        email = request.form.get("email")
+        password = request.form.get("password")
+        password_conf = request.form.get("password_conf")
+
+        # Checks for errors in the form
+        if not (first_name and last_name and email and password):
+            flash("Inscription invalide ! (un ou plusieurs champs incomplets)")
+            return redirect(url_for("sign_up"))
+        if password != password_conf:
+            flash("Les deux mots de passe ne sont pas identiques !")
+            return redirect(url_for("sign_up"))
+
+        member = Member(first_name, last_name, email, password, class_nb)
 
         db.session.add(member)
         db.session.commit()
@@ -93,16 +102,19 @@ def new_homework():
     if request.method == "GET":
         return render_template("new_homework.html", name=member.first_name)
     elif request.method == "POST":
-        # DD/MM
-        date_form = request.form.get("end_date")
-        now = date.today()
-        # DD/MM/YYYY
-        date_form += "/" + str(now.year)
+        # Checks for errors in the form
+        description = request.form.get("description")
+        if not description:
+            flash("Veuillez remplir tous les champs, devoir non ajouté !")
+            return redirect(url_for("new_homework"))
 
+        # Date system
+        date_form = request.form.get("end_date")
         date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
-        # When you're in december and you have work for january
-        if date_form < now:
-            date_form += timedelta(days=365)
+        # Checks for invalid date
+        if date_form <= date.today() or date_form.day > 31 or date_form.month > 12:
+            flash("Date non conforme, devoir non ajouté !")
+            return redirect(url_for("new_homework"))
 
         # File upload system
         file = request.files["file"]
@@ -116,7 +128,7 @@ def new_homework():
         homework = Homework(
             member_id = member.id,
             subject = request.form.get("subject"),
-            description = request.form.get("description"),
+            description = description,
             end_date = date_form,
             filename = filename,
             class_nb = member.class_nb
