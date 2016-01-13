@@ -44,9 +44,9 @@
             <div id="navbar" class="navbar-collapse collapse">
                <ul class="nav navbar-nav">
                   <li {% if active_page == "homepage" %} class="active" {% endif %}><a href="/">Accueil</a></li>
-                  {% if name %}
+                  {% if member %}
                   <li {% if active_page == "new_homework" %} class="active" {% endif %}><a href="{{ url_for("new_homework") }}">Nouveau devoir</a></li>
-                  <li><a href="">{{ name }}</a></li>
+                  <li><a href="">{{ member.first_name }}</a></li>
                   <li><a href="{{ url_for("sign_out") }}">Déconnexion</a></li>
                   {% else %}
                   <li {% if active_page == "sign_up" %} class="active" {% endif %}><a href="{{ url_for("sign_up") }}">Inscription</a></li>

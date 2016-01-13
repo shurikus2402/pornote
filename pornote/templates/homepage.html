@@ -12,4 +12,34 @@
    <p>Partagez vos devoirs et accumulez des points vous permettant de récupérer les devoirs des autres personnes de votre classe. Plus vous donnez, plus vous recevez ! :D</p>
 </div>
 
+{% if member %}
+<h3>Vous avez {{ member.points }} points !</h3><br>
+
+<table class="table table-striped">
+   <thead>
+      <tr>
+         <th>Le</th>
+         <th>Matière</th>
+         <th>Description</th>
+         <th>Par</th>
+         <th>Lien</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for homework in homeworks %}
+      <tr>
+         <td>{{ homework.end_date }}</td>
+         <td>{{ homework.subject}}</td>
+         <td>{{ homework.description}}</td>
+         <td>{{ homework.author.first_name }} {{ homework.author.last_name }}</td>
+         <td>Lien</td>
+      </tr>
+      {% endfor %}
+   </tbody>
+</table>
+
+{% else %}
+<p>Comment ça marche ? (todo)</p>
+{% endif %}
+
 {% endblock content %}

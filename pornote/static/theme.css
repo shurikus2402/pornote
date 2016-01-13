@@ -3,32 +3,13 @@ body {
    padding-bottom: 30px;
 }
 
-.project-vitals {
-   font-size: 2em;
-}
-
-.search-card {
-   padding:15px;
-   border:1px solid #000; 
-   height:415px;
-   margin-bottom:40px;
-}
-
-.search-description {
-   height:350px;
-}
-
-.search-thumbnail {
-   height:200px;
-}
-
-.btn-punchstarter {
+.btn-pornote {
    background-color:#215fa5;
    color: #FFF;
    font-weight: bold;
 }
 
-.btn-punchstarter:hover {
+.btn-pornote:hover {
    background-color:#2177a5;
    color:#FFF;
 }

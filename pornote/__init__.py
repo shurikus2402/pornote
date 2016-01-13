@@ -24,7 +24,14 @@ def homepage():
         return render_template("homepage.html")
     else:
         member = Member.query.filter_by(email = session["email"]).first()
-        return render_template("homepage.html", name=member.first_name)
+        homeworks = Homework.query.filter_by(class_nb = member.class_nb).all()
+        availabe_homework = []
+        for i in range(0, len(homeworks)):
+            if homeworks[i].section in ["G", member.section, member.second_lang]:
+                availabe_homework.append(homeworks[i])
+        sorted_homework = sorted(availabe_homework, key=lambda x: x.end_date)
+        return render_template( "homepage.html", 
+                                member=member, homeworks=sorted_homework)
 
 @app.route("/deconnexion/")
 def sign_out():
@@ -64,6 +71,8 @@ def sign_up():
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
         class_nb = int(request.form.get("class_nb"))
+        section = request.form.get("section")
+        second_lang = request.form.get("second_lang")
         email = request.form.get("email")
         password = request.form.get("password")
         password_conf = request.form.get("password_conf")
@@ -75,8 +84,13 @@ def sign_up():
         if password != password_conf:
             flash("Les deux mots de passe ne sont pas identiques !")
             return redirect(url_for("sign_up"))
+        member = Member.query.filter_by(email = email.lower()).first()
+        if member:
+            flash("Adresse mail déjà utilisée !")
+            return redirect(url_for("sign_up"))
 
-        member = Member(first_name, last_name, email, password, class_nb)
+        member = Member(first_name, last_name, email, password, 
+                        class_nb, section, second_lang)
 
         db.session.add(member)
         db.session.commit()
@@ -100,8 +114,19 @@ def new_homework():
     member = Member.query.filter_by(email = session["email"]).first()
 
     if request.method == "GET":
-        return render_template("new_homework.html", name=member.first_name)
+        return render_template("new_homework.html", member=member)
     elif request.method == "POST":
+        # Section system 
+        subject = request.form.get("subject")
+        if subject in ["Français", "Histoire", "Anglais"]:
+            section = "G" # common to everyone
+        elif subject in ["Maths S", "Physique S", "SVT S"]:
+            section = "S"
+        elif subject in ["Maths ES", "Physique ES", "SVT ES", "Economie"]:
+            section = "ES"
+        else:
+            section = subject # Spanish and German
+
         # Checks for errors in the form
         description = request.form.get("description")
         if not description:
@@ -127,12 +152,15 @@ def new_homework():
 
         homework = Homework(
             member_id = member.id,
-            subject = request.form.get("subject"),
+            subject = subject,
+            section = section,
             description = description,
             end_date = date_form,
             filename = filename,
             class_nb = member.class_nb
         )
+
+        member.points += 1
 
         db.session.add(homework)
         db.session.commit()

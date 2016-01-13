@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: 89314d57ba4e
+Revision ID: b6f1ba57f4e8
 Revises: None
-Create Date: 2016-01-11 17:58:32.611876
+Create Date: 2016-01-13 21:43:47.846717
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '89314d57ba4e'
+revision = 'b6f1ba57f4e8'
 down_revision = None
 
 from alembic import op
@@ -20,9 +20,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=64), nullable=True),
     sa.Column('last_name', sa.String(length=64), nullable=True),
-    sa.Column('class_nb', sa.Integer(), nullable=True),
     sa.Column('email', sa.String(length=128), nullable=True),
     sa.Column('password', sa.String(length=64), nullable=True),
+    sa.Column('points', sa.Integer(), nullable=True),
+    sa.Column('class_nb', sa.Integer(), nullable=True),
+    sa.Column('section', sa.String(length=64), nullable=True),
+    sa.Column('second_lang', sa.String(length=64), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
@@ -30,6 +33,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('member_id', sa.Integer(), nullable=False),
     sa.Column('subject', sa.String(length=128), nullable=True),
+    sa.Column('section', sa.String(length=64), nullable=True),
     sa.Column('description', sa.String(length=256), nullable=True),
     sa.Column('end_date', sa.Date(), nullable=True),
     sa.Column('filename', sa.String(length=128), nullable=True),
