@@ -1,13 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+import datetime
+import os
+
+from flask import Flask, flash, session
+from flask import render_template, request, redirect, url_for, send_from_directory
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
 from werkzeug import secure_filename
 from datetime import date
-import datetime
-import os
 
 app = Flask(__name__)
+app.debug = True
 app.config.from_object("pornote.config")
 manager = Manager(app)
 
@@ -145,7 +148,7 @@ def new_homework():
         file = request.files["file"]
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            file.save(os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename))
         else:
             flash("Fichier invalide, devoir non ajouté !")
             return redirect(url_for("new_homework"))
@@ -168,3 +171,20 @@ def new_homework():
         flash("Devoir ajouté sur le serveur !")
 
         return redirect(url_for("homepage"))
+
+@app.route("/uploads/<path:filename>", methods=["GET", "POST"])
+def download(filename):
+    # If the member is not logged in
+    if "email" not in session:
+        return redirect(url_for("homepage"))
+
+    # TODO : disable if the member doesn't have enough points
+
+    member = Member.query.filter_by(email = session["email"]).first()
+    member.points -= 1
+
+    db.session.commit()
+
+    current_path = os.path.dirname(os.path.realpath(__file__))
+    uploads = os.path.join(current_path, app.config["UPLOAD_FOLDER"])
+    return send_from_directory(uploads, filename)
