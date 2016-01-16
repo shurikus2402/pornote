@@ -1,6 +1,7 @@
 from pornote import db
 from werkzeug import generate_password_hash, check_password_hash
 
+
 class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
