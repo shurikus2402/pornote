@@ -10,6 +10,17 @@ from datetime import date
 from pornote.models import *
 
 
+def get_homework(member):
+    homeworks = Homework.query.filter_by(class_nb = member.class_nb).all()
+    availabe_homework = []
+
+    for i in range(0, len(homeworks)):
+        if homeworks[i].section in ["G", member.section, member.second_lang] and \
+            homeworks[i].end_date >= date.today():
+            availabe_homework.append(homeworks[i])
+
+    return sorted(availabe_homework, key=lambda x: x.end_date)
+
 def allowed_file(filename):
     return  '.' in filename and \
             filename.rsplit('.', 1)[1] not in app.config["UNALLOWED_EXTENSIONS"]
