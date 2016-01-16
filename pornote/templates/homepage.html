@@ -9,14 +9,14 @@
 
 <div class="jumbotron">
    <h2>Eh, bon d'voir sa mère ! Casse la gorge</h2>
-   <p>Partagez vos devoirs et accumulez des points vous permettant de récupérer les devoirs des autres personnes de votre classe. Plus vous donnez, plus vous recevez ! :D</p>
+   <p>Partagez vos devoirs et accumulez des points vous permettant de récupérer les devoirs des autres. Plus vous donnez, plus vous recevez !</p>
 </div>
 
 {% if member %}
-<h3>Vous avez {{ member.points }} points !</h3><br>
-{% if member.points <= 0 %}
-<p>Pas assez de point pour télécharger des devoirs non publics !</p>
-{% endif %}
+   <h3>Vous avez {{ member.points }} points !</h3><br>
+   {% if member.points <= 0 %}
+      <p>Pas assez de point pour télécharger des devoirs non publics !</p>
+   {% endif %}
 
    <table class="table table-striped">
       <thead>
@@ -29,7 +29,7 @@
          </tr>
       </thead>
       <tbody>
-         {% for homework in homeworks %}
+      {% for homework in homeworks %}
          <tr>
             {% if homework.is_public %}
                <td>{{ homework.end_date }} <b>Public !</b></td>
@@ -45,12 +45,25 @@
                <td></td>
             {% endif %}
          </tr>
-         {% endfor %}
+      {% endfor %}
       </tbody>
    </table>
 
 {% else %}
-<p>Comment ça marche ? (todo)</p>
+   <div class="page-header">
+      <h1>Comment ça marche ?</h1>
+   </div>
+   <div class="homepage-presentation">
+      <p>Chaque devoir que vous envoyez vous rapporte <b>1 point</b>. Seul les personnes de votre classe avec des points peuvent télécharger ce devoir. Si vous décidez de le rendre public, alors n'importe qui de la classe peut le voir et cette opération vous rapporte <b>2 points</b>.</p>
+
+      <p>A chaque fois que vous téléchargez un devoir, cela vous coûte 1 point.</p>
+   </div>
+   <div class="page-header">
+      <h1>Par où commencer ?</h1>
+   </div>
+   <div class="homepage-presentation">
+      <p>Dans un premier temps, inscrivez-vous sur le site (ou connectez vous si vous avez déjà un compte), et vous accéderez au tableau principal contenant tous les devoirs de votre classe. Votre nombre de points est aussi affiché, et vous pouvez cliquer sur les liens afin de commencer à télécharger des devoirs.</p>
+   </div>
 {% endif %}
 
 {% endblock content %}
