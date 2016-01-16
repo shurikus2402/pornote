@@ -78,6 +78,12 @@ def new_homework():
             flash("Fichier invalide, devoir non ajouté !")
             return redirect(url_for("new_homework"))
 
+        checkbox = request.form.get("is_public")
+        if checkbox:
+            is_public = True
+        else:
+            is_public = False
+
         homework = Homework(
             member_id   = member.id,
             subject     = subject,
@@ -85,7 +91,8 @@ def new_homework():
             description = description,
             end_date    = date_form,
             filename    = filename,
-            class_nb    = member.class_nb
+            class_nb    = member.class_nb,
+            is_public   = is_public
         )
 
         db.session.add(homework)
@@ -102,7 +109,11 @@ def new_homework():
 
         file.save(path)
 
-        member.points += 1
+        if homework.is_public:
+            member.points += 2
+        else:
+            member.points += 1
+
         db.session.commit()
 
         flash("Devoir ajouté sur le serveur !")
@@ -115,14 +126,15 @@ def download(filename):
     if "email" not in session:
         return redirect(url_for("homepage"))
 
-    member = Member.query.filter_by(email = session["email"]).first()
+    member = Member.query.filter_by(email=session["email"]).first()
+    homework = Homework.query.filter_by(filename=filename).first()
 
-    # The member needs at least 1 point to download a homework
-    if member.points <= 0:
-        return redirect(url_for("homepage"))
-
-    member.points -= 1
-    db.session.commit()
+    if not homework.is_public:
+        # The member needs at least 1 point to download the homework
+        if member.points <= 0:
+            return redirect(url_for("homepage"))
+        member.points -= 1
+        db.session.commit()
 
     current_path = os.path.dirname(os.path.realpath(__file__))
     uploads = os.path.join(current_path, app.config["UPLOAD_FOLDER"])

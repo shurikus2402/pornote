@@ -31,14 +31,18 @@
       <tbody>
          {% for homework in homeworks %}
          <tr>
-            <td>{{ homework.end_date }}</td>
+            {% if homework.is_public %}
+               <td>{{ homework.end_date }} <b>Public !</b></td>
+            {% else %}
+               <td>{{ homework.end_date }}</td>
+            {% endif %}
             <td>{{ homework.subject}}</td>
             <td>{{ homework.description}}</td>
             <td>{{ homework.author.first_name }} {{ homework.author.last_name }}</td>
-            {% if member.points > 0 %}
-            <td><a href="." onclick="window.open('uploads/{{ homework.filename }}');">Lien</a></td>
+            {% if member.points > 0 or homework.is_public %}
+               <td><a href="." onclick="window.open('uploads/{{ homework.filename }}');">Lien</a></td>
             {% else %}
-            <td></td>
+               <td></td>
             {% endif %}
          </tr>
          {% endfor %}

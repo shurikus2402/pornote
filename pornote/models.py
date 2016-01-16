@@ -43,5 +43,6 @@ class Homework(db.Model):
     section = db.Column(db.String(64))
     description = db.Column(db.String(256))
     end_date = db.Column(db.Date)
-    filename = db.Column(db.String(128))
+    filename = db.Column(db.String(128), unique=True)
     class_nb = db.Column(db.Integer)
+    is_public = db.Column(db.Boolean)
