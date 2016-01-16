@@ -16,7 +16,7 @@ class Member(db.Model):
 
     homework = db.relationship("Homework", backref="author")
 
-    def __init__(   self, first_name, last_name, email, password,
+    def __init__(self, first_name, last_name, email, password,
                     class_nb, section, second_lang):
         self.first_name = first_name.title()
         self.last_name = last_name.title()
@@ -32,6 +32,7 @@ class Member(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
 
 class Homework(db.Model):
     id = db.Column(db.Integer, primary_key=True)

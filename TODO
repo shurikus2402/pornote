@@ -1,8 +1,3 @@
-- Système pour ne pas dl quand 0 point
-- db.commit nécessaire ?
-
-- pep8 code
-
 - Vérifier si deux devoirs ont le meme nom
 - Possibilité de mettre le devoir en public (rapporte 2x de points à l'auteur)
 

@@ -3,7 +3,7 @@
 # (see http://flask.pocoo.org/docs/0.10/quickstart/#sessions)
 import os
 
-DEBUG=True
+DEBUG = True
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SQLALCHEMY_DATABASE_URI = "sqlite:///" + BASE_DIR + "/app.db"

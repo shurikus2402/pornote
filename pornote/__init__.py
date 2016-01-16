@@ -1,5 +1,5 @@
 from flask import Flask, session
-from flask import render_template 
+from flask import render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
@@ -26,6 +26,6 @@ def homepage():
     if "email" not in session:
         return render_template("homepage.html")
     else:
-        member = Member.query.filter_by(email = session["email"]).first()
+        member = Member.query.filter_by(email=session["email"]).first()
         homeworks = get_homework(member)
         return render_template("homepage.html", member=member, homeworks=homeworks)
