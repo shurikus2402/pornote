@@ -15,24 +15,15 @@ migrate = Migrate(app, db)
 manager.add_command("db", MigrateCommand)
 
 
-from pornote.models import *
+from pornote.homepage import *
 from pornote.member import *
 from pornote.homework import *
-
-
-@app.route("/")
-def homepage():
-    # If the member is not logged in
-    if "email" not in session:
-        return render_template("homepage.html")
-    else:
-        member = Member.query.filter_by(email=session["email"]).first()
-        homeworks = get_homework(member)
-        return render_template("homepage.html", member=member, homeworks=homeworks)
+from pornote.models import *
 
 
 @app.errorhandler(404)
 def page_not_found(e):
+    # If the member is not logged in
     if "email" not in session:
         return render_template("404.html"), 404
     else:

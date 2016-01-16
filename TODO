@@ -1,6 +1,7 @@
-- Possibilité de voir les devoirs si 0 point mais pas possible de dl
 - Vérifier si deux devoirs ont le meme nom (rajouter l'id à la fin du nom)
 - Possibilité de mettre le devoir en public (rapporte 2x de points à l'auteur)
+
+- Faire le texte sur la page d'accueil
 
 - Créer les liens entre les différentes classes 1 et 2, 3 et 4, 5 et 6
 - Section L
