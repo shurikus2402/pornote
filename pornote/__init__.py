@@ -29,3 +29,12 @@ def homepage():
         member = Member.query.filter_by(email=session["email"]).first()
         homeworks = get_homework(member)
         return render_template("homepage.html", member=member, homeworks=homeworks)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    if "email" not in session:
+        return render_template("404.html"), 404
+    else:
+        member = Member.query.filter_by(email=session["email"]).first()
+        return render_template("404.html", member=member), 404
