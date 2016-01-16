@@ -1,5 +1,6 @@
 import datetime
 import os
+import pathlib
 
 from pornote import app
 from flask import session, redirect, url_for, render_template, request, flash
@@ -73,7 +74,6 @@ def new_homework():
         file = request.files["file"]
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename))
         else:
             flash("Fichier invalide, devoir non ajouté !")
             return redirect(url_for("new_homework"))
@@ -88,9 +88,21 @@ def new_homework():
             class_nb    = member.class_nb
         )
 
-        member.points += 1
-
         db.session.add(homework)
+        db.session.commit()
+
+        # If there is already a file with that name, add homework's id to it
+        path = os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename)
+        f = pathlib.Path(path)
+        if f.is_file():
+            index = filename.rfind(".")
+            filename = filename[:index] + str(homework.id) + filename[index:]
+            path = os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename)
+            homework.filename = filename
+
+        file.save(path)
+
+        member.points += 1
         db.session.commit()
 
         flash("Devoir ajouté sur le serveur !")

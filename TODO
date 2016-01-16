@@ -1,9 +1,9 @@
-- Vérifier si deux devoirs ont le meme nom (rajouter l'id à la fin du nom)
 - Possibilité de mettre le devoir en public (rapporte 2x de points à l'auteur)
+- Créer les liens entre les différentes classes 1 et 2, 3 et 4, 5 et 6
+- Confirmation quand on clique sur le lien ?
 
 - Faire le texte sur la page d'accueil
 
-- Créer les liens entre les différentes classes 1 et 2, 3 et 4, 5 et 6
 - Section L
 
 - Supprimer les devoirs au fur et à mesure (dans la bdd et dans uploads/)
