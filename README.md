@@ -8,11 +8,17 @@ Pornote was an original idea of [Gnomino](https://github.com/Gnomino), that I fo
 
 Each person of a class creates an account, and everyone can upload homeworks to the server (but not everyone can access your homework, only those who worked for !). When you upload it, you gain a point, if you make it visible to everyone you gain two points. These points are needed to access other people's homework, so that everyone has to work a bit to get rewarded.
 
+## What does it look like ?
+
+![Homepage](/img/homepage.png)
+
 ## What is pornote using ?
 
 Pornote is using [Flask](http://flask.pocoo.org/), a microframework for [Python](https://www.python.org/), and some other libraries like [flask-sqlalchemy](http://flask-sqlalchemy.pocoo.org/2.1/) (for the database), and [werkzeug](http://werkzeug.pocoo.org/) (to handle password storage).
 
 ## Run pornote on your server
+
+*Don't forget that I created this especially for my school/class, so it may not be fully compatible with your system (if you want to use it also).*
 
 First, you must create the database :
 
