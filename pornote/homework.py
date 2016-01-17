@@ -11,13 +11,31 @@ from datetime import date
 from pornote.models import *
 
 
+twin_class = {
+    1: 2,
+    2: 1,
+    3: 4,
+    4: 3,
+    5: 6,
+    6: 5
+}
+
 def get_homework(member):
     homeworks = Homework.query.filter_by(class_nb=member.class_nb).all()
     availabe_homework = []
+    today = date.today()
 
     for i in range(0, len(homeworks)):
         if (homeworks[i].section in ["G", member.section, member.second_lang] and
-                homeworks[i].end_date >= date.today()):
+                homeworks[i].end_date >= today):
+            availabe_homework.append(homeworks[i])
+
+    # In my school and on this specific year, each class has a "twin" class
+    # to work with in your section
+    homeworks = Homework.query.filter_by(class_nb=twin_class[member.class_nb]).all()
+    for i in range(0, len(homeworks)):
+        if (homeworks[i].section == member.section and
+                homeworks[i].end_date >= today):
             availabe_homework.append(homeworks[i])
 
     return sorted(availabe_homework, key=lambda x: x.end_date)
