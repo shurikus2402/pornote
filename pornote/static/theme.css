@@ -5,7 +5,16 @@ body {
 
 .homepage-presentation {
    font-size: 18px;
-	font-weight: 200;
+   font-weight: 200;
+}
+
+.figure {
+   text-align: center;
+}
+
+.caption {
+   font-style: italic;
+   text-align: center;
 }
 
 .btn-pornote {

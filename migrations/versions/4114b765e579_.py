@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: 72befa1b0c09
+Revision ID: 4114b765e579
 Revises: None
-Create Date: 2016-01-16 16:08:36.922824
+Create Date: 2016-01-17 17:00:11.345147
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '72befa1b0c09'
+revision = '4114b765e579'
 down_revision = None
 
 from alembic import op
@@ -40,7 +40,8 @@ def upgrade():
     sa.Column('class_nb', sa.Integer(), nullable=True),
     sa.Column('is_public', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['member_id'], ['member.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('filename')
     )
     ### end Alembic commands ###
 
