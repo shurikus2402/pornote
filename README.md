@@ -23,3 +23,5 @@ $ python manage.py db upgrade
 ```
 
 Then, you need to create a `config.py` file, there is a template called `default_config.py` in the `pornote` directory that you can copy. Don't forget to change the secret key in the configuation file before using it ! Also, you should set the location of your `upload` folder, by changing the `UPLOAD_FOLDER` value in the config file. And finally, you might consider changing the `UNALLOWED_EXTENSIONS` value to prevent from XSS problems on your server.
+
+I personnaly use [nginx](https://www.nginx.com/) on my Raspberry Pi to run the server, and I have [CloudFlare](https://www.cloudflare.com/) handling DNS for me. I chose [gunicorn](http://gunicorn.org/) to deploy pornote, and I have [supervisor](http://manpages.ubuntu.com/manpages/intrepid/man3/supervisor.3erl.html) installed to easily manipulate the server. You can find the nginx config in the `pornote.conf` file and the supervisor config in `pornote_supervisor.conf`.

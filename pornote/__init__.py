@@ -1,5 +1,6 @@
-from flask import Flask, session
-from flask import render_template
+from flask import Flask
+from werkzeug.contrib.fixers import ProxyFix
+from flask import session, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
@@ -29,3 +30,8 @@ def page_not_found(e):
     else:
         member = Member.query.filter_by(email=session["email"]).first()
         return render_template("404.html", member=member), 404
+
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+if __name__ == '__main__':
+    app.run()
