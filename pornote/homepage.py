@@ -11,6 +11,6 @@ def homepage():
         return render_template("homepage.html")
     else:
         member = Member.query.filter_by(email=session["email"]).first()
-        homeworks = get_homework(member)
+        homework = get_homework(member)
         return render_template("homepage.html",
-                member=member, homeworks=homeworks)
+                member=member, homework=homework)
