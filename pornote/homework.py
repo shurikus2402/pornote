@@ -81,7 +81,10 @@ def new_homework():
 
         # Date system
         date_form = request.form.get("end_date")
-        date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
+        if '-' in date_form:
+            date_form = datetime.datetime.strptime(date_form, "%Y-%m-%d").date()
+        else:
+            date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
         # Checks for invalid date
         if (date_form <= date.today() or date_form.day > 31 or
                date_form.month > 12):
@@ -95,6 +98,14 @@ def new_homework():
         else:
             flash("Fichier invalide, devoir non ajouté !")
             return redirect(url_for("new_homework"))
+        # If there is already a file with that name, add homework's id to it
+        path = os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename)
+        f = pathlib.Path(path)
+        if f.is_file():
+            # Generate a temporary random name
+            new_name = os.urandom(10)
+        else:
+            new_name = filename
 
         checkbox = request.form.get("is_public")
         if checkbox:
@@ -108,7 +119,7 @@ def new_homework():
             section     = section,
             description = description,
             end_date    = date_form,
-            filename    = filename,
+            filename    = new_name,
             class_nb    = member.class_nb,
             is_public   = is_public
         )
@@ -116,15 +127,13 @@ def new_homework():
         db.session.add(homework)
         db.session.commit()
 
-        # If there is already a file with that name, add homework's id to it
-        path = os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename)
-        f = pathlib.Path(path)
-        if f.is_file():
+        # If the file has a temporary name
+        if new_name != filename:
             index = filename.rfind(".")
             filename = filename[:index] + str(homework.id) + filename[index:]
             path = os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename)
             homework.filename = filename
-
+        
         file.save(path)
 
         if homework.is_public:
