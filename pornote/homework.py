@@ -81,13 +81,16 @@ def new_homework():
 
         # Date system
         date_form = request.form.get("end_date")
-        if '-' in date_form:
-            date_form = datetime.datetime.strptime(date_form, "%Y-%m-%d").date()
-        else:
-            date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
-        # Checks for invalid date
-        if (date_form < date.today() or date_form.day > 31 or
-               date_form.month > 12):
+        try:
+            if '-' in date_form:
+                date_form = datetime.datetime.strptime(date_form, "%Y-%m-%d").date()
+            else:
+                date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
+            valid_date = True
+        except ValueError:
+            valid_date = False
+        ## Checks for invalid date
+        if not valid_date or date_form < date.today():
             flash("Date non conforme, devoir non ajouté !")
             return redirect(url_for("new_homework"))
 
@@ -155,10 +158,9 @@ def new_homework():
             for id, files in filenames.items():
                 file_path = os.path.join(path + "/" + files)
                 file[id].save(file_path)
-            ## Create a zip file of the directory and delete the directory
+            ## Create a zip file of the directory
             shutil.make_archive(path, "zip", path)
             homework.filename = save_name + ".zip"
-            shutil.rmtree(path)
         else:
             file[0].save(path)
 
