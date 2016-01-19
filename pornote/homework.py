@@ -1,6 +1,6 @@
 import datetime
 import os
-import pathlib
+import shutil
 
 from pornote import app
 from flask import session, redirect, url_for, render_template, request, flash
@@ -86,26 +86,38 @@ def new_homework():
         else:
             date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
         # Checks for invalid date
-        if (date_form <= date.today() or date_form.day > 31 or
+        if (date_form < date.today() or date_form.day > 31 or
                date_form.month > 12):
             flash("Date non conforme, devoir non ajouté !")
             return redirect(url_for("new_homework"))
 
         # File upload system
-        file = request.files["file"]
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+        file = request.files.getlist("file[]")
+        ## Check for errors
+        filenames = {}
+        for i in range(len(file)):
+            if file[i] and allowed_file(file[i].filename):
+                filenames[i] = secure_filename(file[i].filename)
+            else:
+                flash("Fichier invalide, devoir non ajouté !")
+                return redirect(url_for("new_homework"))
+        ## Single file
+        if len(file) == 1:
+            is_dir = False
+            save_name = filenames[0]
+        ## Multiple files
         else:
-            flash("Fichier invalide, devoir non ajouté !")
-            return redirect(url_for("new_homework"))
-        # If there is already a file with that name, add homework's id to it
-        path = os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename)
-        f = pathlib.Path(path)
-        if f.is_file():
-            # Generate a temporary random name
+            is_dir = True
+            save_name = secure_filename("%s" % subject)
+        ## If there is already a file/dir with that name, add homework's id to it
+        ## (but for now, since the id is not generated yet, use a random string)
+        upload_path = "pornote/" + app.config["UPLOAD_FOLDER"]
+        path = os.path.join(upload_path, save_name)
+        if os.path.exists(path):
+            ### Generate a temporary random name
             new_name = os.urandom(10)
         else:
-            new_name = filename
+            new_name = save_name
 
         checkbox = request.form.get("is_public")
         if checkbox:
@@ -127,14 +139,28 @@ def new_homework():
         db.session.add(homework)
         db.session.commit()
 
-        # If the file has a temporary name
-        if new_name != filename:
-            index = filename.rfind(".")
-            filename = filename[:index] + str(homework.id) + filename[index:]
-            path = os.path.join("pornote/" + app.config["UPLOAD_FOLDER"], filename)
-            homework.filename = filename
-        
-        file.save(path)
+        # If the file/dir has a temporary name
+        if new_name != save_name:
+            if is_dir:
+                save_name += str(homework.id)
+            else:
+                index = save_name.rfind(".")
+                save_name = save_name[:index] + str(homework.id) + save_name[index:]
+
+            path = os.path.join(upload_path, save_name)
+            homework.filename = save_name
+      
+        if is_dir:
+            os.makedirs(path)
+            for id, files in filenames.items():
+                file_path = os.path.join(path + "/" + files)
+                file[id].save(file_path)
+            ## Create a zip file of the directory and delete the directory
+            shutil.make_archive(path, "zip", path)
+            homework.filename = save_name + ".zip"
+            shutil.rmtree(path)
+        else:
+            file[0].save(path)
 
         if homework.is_public:
             member.points += 2
