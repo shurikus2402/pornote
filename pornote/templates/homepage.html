@@ -32,7 +32,7 @@
       {% for homework in homework %}
          <tr>
             {% if homework.is_public %}
-               <td>{{ homework.end_date }} <b>Public !</b></td>
+            <td>{{ homework.end_date }} <span class="label label-primary">Public</span></td>
             {% else %}
                <td>{{ homework.end_date }}</td>
             {% endif %}

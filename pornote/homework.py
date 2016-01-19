@@ -86,7 +86,7 @@ def new_homework():
         else:
             date_form = datetime.datetime.strptime(date_form, "%d/%m/%Y").date()
         # Checks for invalid date
-        if (date_form <= date.today() or date_form.day > 31 or
+        if (date_form < date.today() or date_form.day > 31 or
                date_form.month > 12):
             flash("Date non conforme, devoir non ajouté !")
             return redirect(url_for("new_homework"))
