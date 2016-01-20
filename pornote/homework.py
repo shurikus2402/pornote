@@ -171,7 +171,11 @@ def new_homework():
             file[0].save(path)
 
         if homework.is_public:
-            member.points += 2
+            member.nb_public += 1
+            member.points += 1
+            if member.nb_public == 3:
+                member.nb_public = 0
+                member.points += 1
         else:
             member.points += 1
 

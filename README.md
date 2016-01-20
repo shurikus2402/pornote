@@ -6,7 +6,7 @@ Pornote was an original idea of [Gnomino](https://github.com/Gnomino), that I fo
 
 ## How does it work ?
 
-Each person of a class creates an account, and everyone can upload homework to the server (but not everyone can access your homework, only those who worked for !). When you upload it, you gain a point, if you make it visible to everyone you gain two points. These points are needed to access other people's homework, so that everyone has to work a bit to get rewarded.
+Each person of a class creates an account, and everyone can upload homework to the server (but not everyone can access your homework, only those who worked for !). When you upload it, you gain a point, but you can also decide to upload it publicly so that it's free for everyone, and for three homework published publicly, you gain an extra point for generosity. These points are needed to access other people's homework, so that everyone has to work a bit to get rewarded.
 
 ## What does it look like ?
 

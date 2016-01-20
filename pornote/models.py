@@ -10,6 +10,7 @@ class Member(db.Model):
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(64))
     points = db.Column(db.Integer)
+    nb_public = db.Column(db.Integer)
     class_nb = db.Column(db.Integer)
     section = db.Column(db.String(64))
     second_lang = db.Column(db.String(64))
@@ -23,6 +24,7 @@ class Member(db.Model):
         self.email = email.lower()
         self.set_password(password)
         self.points = 0
+        self.nb_public = 0
         self.class_nb = class_nb
         self.section = section
         self.second_lang = second_lang
