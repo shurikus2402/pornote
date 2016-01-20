@@ -59,6 +59,15 @@ def get_section(subject):
         return subject
 
 
+def add_to_filename(str1, str2):
+    index = str1.rfind(".")
+    if index == -1:
+        str1 += str2
+    else:
+        str1 = str1[:index] + str2 + str1[index:]
+    return str1
+
+
 @app.route("/nouveau_devoir/", methods=["GET", "POST"])
 def new_homework():
     if "email" not in session:
@@ -89,7 +98,6 @@ def new_homework():
             valid_date = True
         except ValueError:
             valid_date = False
-        ## Checks for invalid date
         if not valid_date or date_form < date.today():
             flash("Date non conforme, devoir non ajouté !")
             return redirect(url_for("new_homework"))
@@ -100,7 +108,10 @@ def new_homework():
         filenames = {}
         for i in range(len(file)):
             if file[i] and allowed_file(file[i].filename):
-                filenames[i] = secure_filename(file[i].filename)
+                temp_name = secure_filename(file[i].filename)
+                if temp_name in filenames.values():
+                    temp_name = add_to_filename(temp_name, "%d" % i)
+                filenames[i] = temp_name
             else:
                 flash("Fichier invalide, devoir non ajouté !")
                 return redirect(url_for("new_homework"))
@@ -144,12 +155,7 @@ def new_homework():
 
         # If the file/dir has a temporary name
         if new_name != save_name:
-            if is_dir:
-                save_name += str(homework.id)
-            else:
-                index = save_name.rfind(".")
-                save_name = save_name[:index] + str(homework.id) + save_name[index:]
-
+            save_name = add_to_filename(save_name, str(homework.id))
             path = os.path.join(upload_path, save_name)
             homework.filename = save_name
       
