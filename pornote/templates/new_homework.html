@@ -18,22 +18,25 @@
       <select class="form-control" id="subject" name="subject">
          <option>Français</option>
          <option>Histoire</option>
+
          {% if member.section == "S" %}
-         <option>Maths S</option>
-         <option>Physique S</option>
-         <option>SVT S</option>
+            <option>Maths S</option>
+            <option>Physique S</option>
+            <option>SVT S</option>
          {% elif member.section == "ES" %}
-         <option>Maths ES</option>
-         <option>SVT ES</option>
-         <option>Physique ES</option>
-         <option>Economie</option>
+            <option>Maths ES</option>
+            <option>SVT ES</option>
+            <option>Physique ES</option>
+            <option>Economie</option>
          {% endif %}
+
          <option>Anglais</option>
          {% if member.second_lang == "Espagnol" %}
-         <option>Espagnol</option>
+            <option>Espagnol</option>
          {% else %}
-         <option>Allemand</option>
+            <option>Allemand</option>
          {% endif %}
+
       </select>
    </div>
 

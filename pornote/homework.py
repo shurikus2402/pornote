@@ -47,20 +47,23 @@ def allowed_file(filename):
 
 
 def get_section(subject):
+    # Common to everyone
     if subject in ["Français", "Histoire", "Anglais"]:
-        # Common to everyone
         return "G"
+    # Scientific
     elif subject in ["Maths S", "Physique S", "SVT S"]:
         return "S"
+    # Economy
     elif subject in ["Maths ES", "Physique ES", "SVT ES", "Economie"]:
         return "ES"
+    # Spanish and German
     else:
-        # Spanish and German
         return subject
 
 
 def add_to_filename(str1, str2):
     index = str1.rfind(".")
+    # If str1 is the name of a directory
     if index == -1:
         str1 += str2
     else:
@@ -115,11 +118,9 @@ def new_homework():
             else:
                 flash("Fichier invalide, devoir non ajouté !")
                 return redirect(url_for("new_homework"))
-        ## Single file
         if len(file) == 1:
             is_dir = False
             save_name = filenames[0]
-        ## Multiple files
         else:
             is_dir = True
             save_name = secure_filename("%s" % subject)
@@ -128,7 +129,6 @@ def new_homework():
         upload_path = "pornote/" + app.config["UPLOAD_FOLDER"]
         path = os.path.join(upload_path, save_name)
         if os.path.exists(path):
-            ### Generate a temporary random name
             new_name = os.urandom(10)
         else:
             new_name = save_name
@@ -170,14 +170,13 @@ def new_homework():
         else:
             file[0].save(path)
 
+        # Point system
+        member.points += 1
         if homework.is_public:
             member.nb_public += 1
-            member.points += 1
             if member.nb_public == 3:
                 member.nb_public = 0
                 member.points += 1
-        else:
-            member.points += 1
 
         db.session.commit()
 
@@ -195,7 +194,6 @@ def download(filename):
     homework = Homework.query.filter_by(filename=filename).first()
 
     if not homework.is_public:
-        # The member needs at least 1 point to download the homework
         if member.points <= 0:
             return redirect(url_for("homepage"))
         member.points -= 1

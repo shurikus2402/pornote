@@ -1,9 +1,9 @@
 from flask import Flask
-from werkzeug.contrib.fixers import ProxyFix
 from flask import session, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
+from werkzeug.contrib.fixers import ProxyFix
 
 
 app = Flask(__name__)
