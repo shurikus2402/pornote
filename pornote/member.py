@@ -22,7 +22,7 @@ def sign_in():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        member = Member.query.filter_by(email=email.lower()).first()
+        member = Member.query.filter_by(email=email).first()
         if member and member.check_password(password):
             session["email"] = email
             return redirect(url_for("homepage"))
